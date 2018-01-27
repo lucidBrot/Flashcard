@@ -182,3 +182,5 @@ Difference perceptron to Hopfield network
 Thresholds of neurons never updated in Hopfield network
 Feed-forward network
 Neural network without loops or cycle|Input layer -> (Hidden layer)* -> Output
+Hodgkin-Huxley Model
+I_ionic =$I_Leakage + I_Na + for any other ions... =|g_L * (V_m - E_L)  +  g_K_max * n^4 * (V_m -E_K)  +  g_Na_max * m^3 * h * (V_m -E_Na)|where g stands for the conductance (max for its maximum)|n and m are in [0,1] and stand for the number of gates within the channel|V_m is the membrane potential|E_ion is the reversal potential
