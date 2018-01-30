@@ -184,3 +184,5 @@ Feed-forward network
 Neural network without loops or cycle|Input layer -> (Hidden layer)* -> Output
 Hodgkin-Huxley Model
 I_ionic =$I_Leakage + I_Na + for any other ions... =|g_L * (V_m - E_L)  +  g_K_max * n^4 * (V_m -E_K)  +  g_Na_max * m^3 * h * (V_m -E_Na)|where g stands for the conductance (max for its maximum)|n and m are in [0,1] and stand for the number of gates within the channel|V_m is the membrane potential|E_ion is the reversal potential
+Energy in a Hopfield Network
+-x^T W x|x is the input vector|W is the (symmetric) weight matrix and is 0 on the diagonal.|Energy never decreases|State Updates never lead to less active units if the energy stays the same

@@ -19,6 +19,7 @@ random_device rng;
 string DELIMITER = "\n\e[4m                                                  \e[0m\n";
 string DELIMITER_WITHOUT_NEWLINES = "\e[4m                                                  \e[0m";
 string LINE_COMMENT = "//";
+string NEWLINE_ESCAPE_SEQUENCE = "&&"; // if a line ends in this sequence, the next line will be appended to this line (without this sequence included)
 int DEFAULT_CARD_SORTING = 0; // 0 random, 1 semirandom, 2 sequential
 int DEFAULT_SHOW_PROGRESS = 1; // 1 to show progress
 // constants that you should update from time to time (manually)
@@ -111,13 +112,40 @@ while (getline(file, key)) {
 	do{
 		getline(file, value);
 	} while (value.substr(0,LINE_COMMENT.size())==LINE_COMMENT);
+	
+	if(file.bad()){
+		std::cout << "Error 1: Please check that every card has a value line" << std::endl;
+		exit(EXIT_FAILURE);
+	}
+	
+	// if the line ends with a NEWLINE_ESCAPE_SEQUENCE, read also the next line
+	std::string combined_values = "";
+	int size = value.length();
+	// escape sequence at end of line   case. Only executed if that is the case
+	while(value.substr(size - NEWLINE_ESCAPE_SEQUENCE.size())==NEWLINE_ESCAPE_SEQUENCE){
+		value = value.substr(0, size - NEWLINE_ESCAPE_SEQUENCE.size()); // get rid of escape signs
+		combined_values += value;
+		getline(file, value); // read next line into the variable "value"
+		if(file.bad()){
+			std::cout << "Error 2: No new line after the escape sequence "<< NEWLINE_ESCAPE_SEQUENCE << std::endl;
+			exit(EXIT_FAILURE);
+		}
+	}
+	// now there should be a line without escape sequence at the end
+	if(value.substr(size-NEWLINE_ESCAPE_SEQUENCE.size())!=NEWLINE_ESCAPE_SEQUENCE){
+		// usual case. just add it
+		combined_values+=value; 
+	} else {
+		// if there is no line with an escape sequence and no line without one, there's probably no line at all.
+		// but wouldn't we get an EOF then?
+		// IDC, just proceed in that case. 
+	}
+	cards.emplace_back(key,combined_values);
+	#ifdef DEBUG
+	cout << "Added card pair (" << key << ", " << combined_values << ")" << endl;
+	#endif
 
-cards.emplace_back(key,value);
-#ifdef DEBUG
-cout << "Added card pair (" << key << ", " << value << ")" << endl;
-#endif
-
-}
+	}
 }
 
 int main(int argc, char *argv[]) {
