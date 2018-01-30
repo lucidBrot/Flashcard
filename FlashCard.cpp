@@ -122,7 +122,7 @@ while (getline(file, key)) {
 	std::string combined_values = "";
 	int size = value.length();
 	// escape sequence at end of line   case. Only executed if that is the case
-	while((value.length() >= NEWLINE_ESCAPE_SEQUENCE.length()) && (value.compare(value.length() - NEWLINE_ESCAPE_SEQUENCE.length(), NEWLINE_ESCAPE_SEQUENCE.length(), NEWLINE_ESCAPE_SEQUENCE))){
+	while((value.length() >= NEWLINE_ESCAPE_SEQUENCE.length()) && (0==value.compare(value.length() - NEWLINE_ESCAPE_SEQUENCE.length(), NEWLINE_ESCAPE_SEQUENCE.length(), NEWLINE_ESCAPE_SEQUENCE))){
 		value = value.substr(0, value.length() - NEWLINE_ESCAPE_SEQUENCE.length()); // get rid of escape signs
 		combined_values += value;
 		getline(file, value); // read next line into the variable "value"

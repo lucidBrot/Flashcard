@@ -1,5 +1,2 @@
 Hodgkin-Huxley Model
-This °°
-is °°
-...|°°
-a$simple$test
+a$simple$test$tho
