@@ -19,11 +19,11 @@ random_device rng;
 string DELIMITER = "\n\e[4m                                                  \e[0m\n";
 string DELIMITER_WITHOUT_NEWLINES = "\e[4m                                                  \e[0m";
 string LINE_COMMENT = "//";
-string NEWLINE_ESCAPE_SEQUENCE = "°°\n"; // if a line ends in this sequence, the next line will be appended to this line (without this sequence included)
+string NEWLINE_ESCAPE_SEQUENCE = "°°"; // if a line ends in this sequence, the next line will be appended to this line (without this sequence included)
 int DEFAULT_CARD_SORTING = 0; // 0 random, 1 semirandom, 2 sequential
 int DEFAULT_SHOW_PROGRESS = 1; // 1 to show progress
 // constants that you should update from time to time (manually)
-string VERSION = "2.0.3";
+string VERSION = "2.0.4";
 string LAST_UPDATED = "Jan. 2018";
 // arguments that are handled
 string ARG_VERSION = "--version";
@@ -122,8 +122,8 @@ while (getline(file, key)) {
 	std::string combined_values = "";
 	int size = value.length();
 	// escape sequence at end of line   case. Only executed if that is the case
-	while((value.length() >= NEWLINE_ESCAPE_SEQUENCE.length()) && (0==value.compare(value.length() - NEWLINE_ESCAPE_SEQUENCE.length(), NEWLINE_ESCAPE_SEQUENCE.length(), NEWLINE_ESCAPE_SEQUENCE))){
-		value = value.substr(0, value.length() - NEWLINE_ESCAPE_SEQUENCE.length()); // get rid of escape signs
+	while((value.length() >= NEWLINE_ESCAPE_SEQUENCE.length()) && (value.substr(size-NEWLINE_ESCAPE_SEQUENCE.size()-1))!=NEWLINE_ESCAPE_SEQUENCE){
+		value = value.substr(0, value.length() - NEWLINE_ESCAPE_SEQUENCE.length() -1); // get rid of escape signs
 		combined_values += value;
 		getline(file, value); // read next line into the variable "value"
 		if(file.bad()){
@@ -132,7 +132,7 @@ while (getline(file, key)) {
 		}
 	}
 	// now there should be a line without escape sequence at the end
-	if((value.length() >= NEWLINE_ESCAPE_SEQUENCE.length()) &&(value.substr(size-NEWLINE_ESCAPE_SEQUENCE.size()))!=NEWLINE_ESCAPE_SEQUENCE){
+	if((value.length() <= NEWLINE_ESCAPE_SEQUENCE.length()) || (value.substr(size-NEWLINE_ESCAPE_SEQUENCE.size()))!=NEWLINE_ESCAPE_SEQUENCE){
 		// usual case. just add it
 		combined_values+=value; 
 	} else {

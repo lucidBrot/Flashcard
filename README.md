@@ -1,7 +1,7 @@
 # Flashcard
 Small flashcard program
 
-FlashCard v2.0.3
+FlashCard v2.0.4
 Jonathan Rosenthal, Frédéric Vogel, Eric Mink
 
 ## Compilation
@@ -43,12 +43,37 @@ Additionally, `--version` may be passed as an argument with or without accompany
 ## Flashcard File
 The flashcard file contains n flashcards in the following manner:
 - On the (2*i)-th line, delimited by '\n', the front of the i-th card.
+
 - On the ((2*i)+1)-th line, delimited by '\n', the back of the i-th card.
   The following symbols have special meaning:
+
 - `\n`: Delimits the front from the back from the front and so on
+
 - `|`:  Delimits a new line *inside* of the card
+
 - `$`:  Delimits a tab character *inside* of the card
+
 - Any line starting with `//` will be ignored (since v 2.0.2)
+
+- Any line ending with `°°` will cause the next line to be treated as if it were on this same line (since v 2.0.4)
+
+  > *Example*
+  >
+  > ```flashcard
+  > Hodgkin-Huxley Model
+  > This °°
+  > is °°
+  > ...|°°
+  > a$simple$test$tho
+  > ```
+  >
+  > ```output
+  > Hodgkin-Huxley Model
+  > This is ...
+  > a       simple  test
+  > ```
+  >
+  >
 
 The symbols '|', '$' and '\n' also break the flow of the program, requiring the user to type in enter to continue
 the execution.
